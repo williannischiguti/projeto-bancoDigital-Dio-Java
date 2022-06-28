@@ -1,65 +1,95 @@
 package banco_digital;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import java.util.List;
+import java.util.Scanner;
 
-public class Conta implements Iconta   { 
+public class Conta implements Iconta {
 
-    private static final int AGENCIA_PADRAO = 1;
-    private static int SEQUENCIAL = 1;
-    
-    protected int agencia;
-    protected int numero;
-    protected double saldo;
-    protected Cliente cliente;
+	protected Integer agencia;
+	protected String conta;
+	protected double saldo;
+	protected Cliente cliente;
+	protected String nome;
 
-    public Conta(Cliente cliente) {
-        this.agencia = Conta.AGENCIA_PADRAO;
-        this.numero = SEQUENCIAL++;
-        this.cliente = cliente;
-    }
+	Scanner sc = new Scanner(System.in);
 
-    public void sacar(double valor) {
-        saldo -= valor;
-    }
+	public Conta() {
 
-    public void depositar(double valor) {
-        saldo += valor;
-    }
+	}
 
-    public void transferir(double valor, Iconta contaDestino){
-        this.sacar(valor);
-        contaDestino.depositar(valor);
-    }
+	public Conta(String nome, Integer agencia, String conta) {
+		this.nome = nome;
+		this.agencia = agencia;
+		this.conta = conta;
+	}
 
-    public int getAgencia() {
-        return agencia;
-    }
+	public Conta(Integer agencia, String conta) {
+		this.agencia = agencia;
+		this.conta = conta;
+	}
 
-    public int getNumero() {
-        return numero;
-    }
+	public void sacar(double valor) {
+		if (this.saldo >= valor) {
+			saldo -= valor;
+		} else {
+			System.out.println("Saldo insuficiente");
+		}
 
-    public double getSaldo() {
-        return saldo;
-    }
-    
-	public void gerarChavePixAleatoria() {
-		String pix = RandomStringUtils.randomAlphanumeric(32);
-		 System.out.printf("Pix: " + pix.substring(0, 8) + "-" + pix.substring(8, 12)
-	        + "-" + pix.substring(12, 16) + "-" + pix.substring(16, 20) + "-" + pix.substring(20, 32));
-    	// máscara: ########-####-####-####-############
-    	//8-4-4-4-12
-    }
-    
-    protected void imprimirInfosComuns() {
-        System.out.println(String.format("Titular: %s", this.cliente.getNome()));
-        System.out.println(String.format("Agência: %d", this.agencia));
-        System.out.println(String.format("Número: %d", this.numero));
-        System.out.println(String.format("Saldo: %.2f", this.saldo));
-    }
-    
-    public void imprimirExtrato() {
-    	
-    }
+	}
+
+	public void menu() {
+
+		System.out.println();
+		System.out.println("O que deseja fazer a seguir? ");
+		System.out.println("1- Cadastrar contatos | 2- Cadastrar chave Pix | "
+				+ "3- Depositar | 4-Sacar | 5- Transferência | " + "6 - Ver extrato | 7- Listar contatos | 8- Sair");
+	}
+
+	public void depositar(double valor) {
+		saldo += valor;
+	}
+
+	public void transferir(double valor, Iconta contaDestino) {
+		this.sacar(valor);
+		contaDestino.depositar(valor);
+	}
+	
+	public String getNome() {
+		return nome;
+	}
+
+	public Integer getAgencia() {
+		return agencia;
+	}
+
+	public String getConta() {
+		return conta;
+	}
+
+	public double getSaldo() {
+		return saldo;
+	}
+
+	public void imprimirDadosConta() {
+		System.out.println("=== Dados da sua conta criada ===");
+		System.out.println("Nome: " + this.nome);
+		System.out.println("Agência: " + this.agencia);
+		System.out.println("Conta: " + this.conta);
+	}
+
+	public void infoBanco() {
+		System.out.println("O Banco Digital é o banco do seu jeito! ;) ");
+	}
+
+	protected void imprimirInfosComuns() {
+		System.out.println(String.format("Titular: %s", this.nome));
+		System.out.println(String.format("Agência: %s", this.agencia));
+		System.out.println(String.format("Número: %s", this.conta));
+		System.out.println(String.format("Saldo: %.2f", this.saldo));
+	}
+
+	public void imprimirExtrato() {
+
+	}
 
 }

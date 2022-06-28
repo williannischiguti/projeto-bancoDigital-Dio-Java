@@ -2,8 +2,8 @@ package banco_digital;
 
 public class ContaPoupanca extends Conta {
 
-    public ContaPoupanca (Cliente cliente) {
-        super(cliente);
+    public ContaPoupanca (String nome, Integer agencia, String conta) {
+        super(nome, agencia, conta);
     }
 
     public void imprimirExtrato() {
