@@ -1,5 +1,7 @@
 package banco_digital;
 
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -8,10 +10,11 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnsupportedEncodingException {
 
 		Locale.setDefault(Locale.US);
-		Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in, "ISO-8859-1");
+		PrintStream ps = new PrintStream(System.out, true, "ISO-8859-1");
 		Random random = new Random();
 		List<Conta> cadastrarContatos = new ArrayList();
 		Conta conta = new Conta();
@@ -19,7 +22,7 @@ public class Main {
 		
 		System.out.println("=== Olá, seja bem vindo ao Banco Digital ===\n");
 		System.out.println("Cadastre a sua conta");
-
+		
 		System.out.print("Digite o seu nome: ");
 		String meuNome = sc.nextLine();
 		int agencia = random.nextInt((9999 - 1000) + 1) + 1000;
@@ -40,6 +43,7 @@ public class Main {
 			sc.nextLine();
 			
 			if (opcao == 1) {
+				conta.limparTela();
 				System.out.print("Nome do contato: ");
 				String nomeContato = sc.nextLine();
 				agencia = random.nextInt((9999 - 1000) + 1) + 1000;
@@ -49,31 +53,34 @@ public class Main {
 				cadastrarContatos.add(new Conta(nomeContato, agencia, contaPadrao));
 
 			}else if (opcao == 2) {
+				conta.limparTela();
 				pix.menuPix();
 				System.out.print("Digite a opção de cadastro Pix: ");
 				int opcaoPix = sc.nextInt();
 				pix.cadastrarPix(opcaoPix);
 				
 			}else if (opcao == 3) {
+				conta.limparTela();
 				System.out.print("Digite o valor para depósito: ");
 				double valor = sc.nextDouble();
 				minhaConta.depositar(valor);
 				
 			}else if (opcao == 4) {
+				conta.limparTela();
 				System.out.print("Digite o valor para saque: ");
 				double valor = sc.nextDouble();
 				minhaConta.sacar(valor);
 				
 			}else if (opcao == 7) {
-				
+				conta.limparTela();
 				if (cadastrarContatos.isEmpty()) {
 					System.out.println("Ainda não há contatos cadastrados.");
 				}
 				else {
 					
 					for (int i = 0; i < cadastrarContatos.size(); i++) {
-						System.out.println("Nome: " + cadastrarContatos.get(i).nome + " | "
-								+ "Agência: " + cadastrarContatos.get(i).agencia +
+						ps.println("Nome: " + cadastrarContatos.get(i).nome + " | "
+								+ "Agencia: " + cadastrarContatos.get(i).agencia +
 								" | Conta: " + cadastrarContatos.get(i).conta);
 					}
 				}
@@ -82,6 +89,7 @@ public class Main {
 				break;
 			}
 			else {
+				conta.limparTela();
 				System.out.println("Opção inexistente!");
 			}
 		}

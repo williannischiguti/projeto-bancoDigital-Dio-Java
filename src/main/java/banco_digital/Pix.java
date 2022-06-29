@@ -3,7 +3,7 @@ package banco_digital;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class Pix extends ContaCorrente {
-
+	
 	String celularPix;
 	String cpfPix;
 	String emailPix;
@@ -67,7 +67,7 @@ public class Pix extends ContaCorrente {
 			break;
 
 		case 4:
-
+			
 			if (this.chaveAleatoriaPix == null) {
 				this.chaveAleatoriaPix = RandomStringUtils.randomAlphanumeric(32);
 				this.chaveAleatoriaPix = this.chaveAleatoriaPix.substring(0, 8) + "-"
