@@ -1,6 +1,5 @@
 package banco_digital;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Conta implements Iconta {
@@ -8,7 +7,6 @@ public class Conta implements Iconta {
 	protected Integer agencia;
 	protected String conta;
 	protected double saldo;
-	protected Cliente cliente;
 	protected String nome;
 
 	Scanner sc = new Scanner(System.in);
@@ -19,11 +17,6 @@ public class Conta implements Iconta {
 
 	public Conta(String nome, Integer agencia, String conta) {
 		this.nome = nome;
-		this.agencia = agencia;
-		this.conta = conta;
-	}
-
-	public Conta(Integer agencia, String conta) {
 		this.agencia = agencia;
 		this.conta = conta;
 	}
@@ -71,7 +64,7 @@ public class Conta implements Iconta {
 	}
 
 	public void imprimirDadosConta() {
-		System.out.println("=== Dados da sua conta criada ===");
+		System.out.println("=== Dados da sua conta criada ===\n");
 		System.out.println("Nome: " + this.nome);
 		System.out.println("Agência: " + this.agencia);
 		System.out.println("Conta: " + this.conta);
