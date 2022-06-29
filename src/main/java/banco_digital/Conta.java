@@ -21,15 +21,6 @@ public class Conta implements Iconta {
 		this.conta = conta;
 	}
 
-	public void sacar(double valor) {
-		if (this.saldo >= valor) {
-			saldo -= valor;
-		} else {
-			System.out.println("Saldo insuficiente");
-		}
-
-	}
-
 	public void menu() {
 
 		System.out.println();
@@ -58,8 +49,15 @@ public class Conta implements Iconta {
 	        }
 	    }
 	
-		
+	public void sacar(double valor) {
+		if (this.saldo >= valor) {
+			saldo -= valor;
+		} else {
+			System.out.println("Saldo insuficiente");
+		}
 
+	}
+	
 	public void depositar(double valor) {
 		saldo += valor;
 	}
@@ -90,10 +88,6 @@ public class Conta implements Iconta {
 		System.out.println("Nome: " + this.nome);
 		System.out.println("Agência: " + this.agencia);
 		System.out.println("Conta: " + this.conta);
-	}
-
-	public void infoBanco() {
-		System.out.println("O Banco Digital é o banco do seu jeito! ;) ");
 	}
 
 	protected void imprimirInfosComuns() {

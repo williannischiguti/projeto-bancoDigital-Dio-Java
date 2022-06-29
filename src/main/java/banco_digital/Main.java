@@ -35,6 +35,10 @@ public class Main {
 		System.out.println();
 		
 		minhaConta.imprimirDadosConta();
+		
+		System.out.println("Tecle ENTER para continuar...");
+		sc.nextLine();
+		minhaConta.limparTela();
 	
 		while (true) {
 			
@@ -43,7 +47,6 @@ public class Main {
 			sc.nextLine();
 			
 			if (opcao == 1) {
-				conta.limparTela();
 				System.out.print("Nome do contato: ");
 				String nomeContato = sc.nextLine();
 				agencia = random.nextInt((9999 - 1000) + 1) + 1000;
@@ -51,6 +54,7 @@ public class Main {
 				contaPadrao = Integer.toString(contaRandom).substring(0, 4) + "-" + Integer.toString(contaRandom).substring(4, 5);
 				conta = new Conta (nomeContato, agencia, contaPadrao);
 				cadastrarContatos.add(new Conta(nomeContato, agencia, contaPadrao));
+				conta.limparTela();
 
 			}else if (opcao == 2) {
 				conta.limparTela();
@@ -59,11 +63,13 @@ public class Main {
 				int opcaoPix = sc.nextInt();
 				pix.cadastrarPix(opcaoPix);
 				
+				
 			}else if (opcao == 3) {
 				conta.limparTela();
 				System.out.print("Digite o valor para depósito: ");
 				double valor = sc.nextDouble();
 				minhaConta.depositar(valor);
+				
 				
 			}else if (opcao == 4) {
 				conta.limparTela();
@@ -71,18 +77,20 @@ public class Main {
 				double valor = sc.nextDouble();
 				minhaConta.sacar(valor);
 				
+				
 			}else if (opcao == 7) {
 				conta.limparTela();
 				if (cadastrarContatos.isEmpty()) {
 					System.out.println("Ainda não há contatos cadastrados.");
 				}
 				else {
-					
+					System.out.println("=== Lista de contatos ===");
 					for (int i = 0; i < cadastrarContatos.size(); i++) {
 						ps.println("Nome: " + cadastrarContatos.get(i).nome + " | "
 								+ "Agencia: " + cadastrarContatos.get(i).agencia +
 								" | Conta: " + cadastrarContatos.get(i).conta);
 					}
+					
 				}
 				
 			}else if (opcao == 8) {
@@ -91,6 +99,7 @@ public class Main {
 			else {
 				conta.limparTela();
 				System.out.println("Opção inexistente!");
+				
 			}
 		}
 		
