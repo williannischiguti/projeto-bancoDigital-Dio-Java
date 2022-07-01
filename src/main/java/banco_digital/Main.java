@@ -16,7 +16,7 @@ public class Main {
 		Scanner sc = new Scanner(System.in, "ISO-8859-1");
 		PrintStream ps = new PrintStream(System.out, true, "ISO-8859-1");
 		Random random = new Random();
-		List<Conta> cadastrarContatos = new ArrayList();
+		List<Conta> cadastrarContatos = new ArrayList<Conta>();
 		Conta conta = new Conta();
 		Pix pix = new Pix();
 		
@@ -30,8 +30,8 @@ public class Main {
 		String contaPadrao = Integer.toString(contaRandom).substring(0, 4) + "-" + Integer.toString(contaRandom).substring(4, 5);
 
 		Conta minhaConta = new Conta(meuNome, agencia, contaPadrao);
-		// ContaCorrente contaCorrente = new ContaCorrente(meuNome, agencia, contaPadrao);
-		// ContaPoupanca contaPoupanca = new ContaPoupanca(meuNome, agencia, contaPadrao);
+		ContaCorrente contaCorrente = new ContaCorrente(meuNome, agencia, contaPadrao);
+		ContaPoupanca contaPoupanca = new ContaPoupanca(meuNome, agencia, contaPadrao);
 		System.out.println();
 		
 		minhaConta.imprimirDadosConta();
@@ -63,20 +63,43 @@ public class Main {
 				int opcaoPix = sc.nextInt();
 				pix.cadastrarPix(opcaoPix);
 				
-				
 			}else if (opcao == 3) {
 				conta.limparTela();
-				System.out.print("Digite o valor para depósito: ");
-				double valor = sc.nextDouble();
-				minhaConta.depositar(valor);
-				
-				
+				System.out.printf("Saldo conta corrente: %.2f%n", contaCorrente.getSaldo());
+				System.out.printf("Saldo conta poupança: %.2f%n", contaPoupanca.getSaldo());
+				System.out.println("\nPara qual conta deseja fazer o depósito?");
+				System.out.print("\nDigite 1 para conta corrente ou 2 para conta poupança: ");
+				int tipoConta = sc.nextInt();
+				if (tipoConta == 1) {
+					System.out.print("\nDigite o valor para depósito: ");
+					double valor = sc.nextDouble();
+					contaCorrente.depositar(valor);
+					System.out.printf("%nSaldo atual conta corrente: %.2f%n", contaCorrente.getSaldo());
+				} else if (tipoConta == 2) {
+					System.out.print("\nDigite o valor para depósito: ");
+					double valor = sc.nextDouble();
+					contaPoupanca.depositar(valor);
+					System.out.printf("%nSaldo atual conta poupança: %.2f%n", contaPoupanca.getSaldo());
+				}
+			
 			}else if (opcao == 4) {
 				conta.limparTela();
-				System.out.print("Digite o valor para saque: ");
-				double valor = sc.nextDouble();
-				minhaConta.sacar(valor);
-				
+				System.out.printf("Saldo conta corrente: %.2f%n", contaCorrente.getSaldo());
+				System.out.printf("Saldo conta poupança: %.2f%n", contaPoupanca.getSaldo());
+				System.out.println("\nDe qual conta deseja fazer o saque?");
+				System.out.print("\nDigite 1 para conta corrente ou 2 para conta poupança: ");
+				int tipoConta = sc.nextInt();
+				if (tipoConta == 1) {
+					System.out.print("\nDigite o valor para saque: ");
+					double valor = sc.nextDouble();
+					contaCorrente.sacar(valor);
+					System.out.printf("%nSaldo atual conta corrente: %.2f%n", contaCorrente.getSaldo());
+				} else if (tipoConta == 2) {
+					System.out.print("\nDigite o valor para saque: ");
+					double valor = sc.nextDouble();
+					contaPoupanca.sacar(valor);
+					System.out.printf("%nSaldo atual conta poupança: %.2f%n", contaPoupanca.getSaldo());
+				}
 				
 			}else if (opcao == 7) {
 				conta.limparTela();
@@ -99,12 +122,11 @@ public class Main {
 			else {
 				conta.limparTela();
 				System.out.println("Opção inexistente!");
-				
 			}
 		}
 		
 		sc.close();
 		System.out.println("Obrigado por usar o Banco Digital! Volte sempre!");
-
+		
 	}
 }

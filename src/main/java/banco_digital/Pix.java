@@ -1,8 +1,8 @@
 package banco_digital;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-
-import org.apache.commons.lang3.RandomStringUtils;
 
 public class Pix extends ContaCorrente {
 
@@ -10,7 +10,6 @@ public class Pix extends ContaCorrente {
 	String cpfPix;
 	String emailPix;
 	String chaveAleatoriaPix;
-	String chaveAleatoriaPix2;
 
 	public Pix(String nome, Integer agencia, String conta) {
 		super(nome, agencia, conta);
@@ -71,32 +70,27 @@ public class Pix extends ContaCorrente {
 
 		case 4:
 
-			boolean cadastroChaveAleatoria = false;
-			Random random = new Random();
-			try {
-				if (this.chaveAleatoriaPix == null) {
-					this.chaveAleatoriaPix = RandomStringUtils.randomAlphanumeric(32);
-					this.chaveAleatoriaPix = this.chaveAleatoriaPix.substring(0, 8) + "-"
-							+ this.chaveAleatoriaPix.substring(8, 12) + "-" + this.chaveAleatoriaPix.substring(12, 16)
-							+ "-" + this.chaveAleatoriaPix.substring(16, 20) + "-"
-							+ this.chaveAleatoriaPix.substring(20, 32);
-					cadastroChaveAleatoria = true;
-					System.out.print("Chave Pix cadastrada (Chave aleatória): " + this.chaveAleatoriaPix + "\n");
-				} else {
-					System.out.println("Chave Pix já cadastrada: " + this.chaveAleatoriaPix);
+			if (this.chaveAleatoriaPix == null) { 
+
+				List<String> listOfStrings = new ArrayList<String>(); 
+				String strings = "aAbBcC0dDeEfF1gGhHiI2jJkK3lLmM4nNoO5pPqQ6rRsStT7uUvV8wWxX9yYzZ"; 
+				Random random = new Random(); 
+
+				for (int i = 0; i < 32; i++) { 
+					int randomStrings = random.nextInt(strings.length()); 
+					char charAt = strings.charAt(randomStrings); 
+					String charAtString = Character.toString(charAt); 
+					listOfStrings.add(charAtString); 
 				}
-			} catch (NoClassDefFoundError e) { // Não executa o bloco acima se for executado pelo CMD e lança o erro
-				System.out.print("");
-			} finally { // Bloco adicionado se for executado pelo CMD
-				if (cadastroChaveAleatoria == false && this.chaveAleatoriaPix2 == null && this.chaveAleatoriaPix == null) {
-					int randomNumber = random.nextInt((9999 - 1000) + 1) + 1000;
-					this.chaveAleatoriaPix2 = Integer.toString(randomNumber) + "-" + "PIX" + "-" + "aXwcDt2A";
-					System.out.print("Chave Pix cadastrada (Chave aleatória): " + this.chaveAleatoriaPix2 + "\n");
-				}
-				else if (cadastroChaveAleatoria == false && this.chaveAleatoriaPix2 != null) {
-					System.out.println("Chave Pix já cadastrada: " + this.chaveAleatoriaPix2);
-				}
+				this.chaveAleatoriaPix = listOfStrings.toString().replaceAll("\\[|\\]", "").replaceAll(", ", ""); 
+				this.chaveAleatoriaPix = this.chaveAleatoriaPix.substring(0, 8) + "-" 
+						+ this.chaveAleatoriaPix.substring(8, 12) + "-" + this.chaveAleatoriaPix.substring(12, 16) + "-"
+						+ this.chaveAleatoriaPix.substring(16, 20) + "-" + this.chaveAleatoriaPix.substring(20, 32);
+				System.out.print("Chave Pix cadastrada (chave aleatória): " + this.chaveAleatoriaPix + "\n"); 
+			} else { 
+				System.out.println("Chave Pix já cadastrada: " + this.chaveAleatoriaPix);
 			}
+
 			break;
 
 		default:
