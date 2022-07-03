@@ -73,7 +73,7 @@ public class Pix extends ContaCorrente {
 			if (this.chaveAleatoriaPix == null) { 
 
 				List<String> listOfStrings = new ArrayList<String>(); 
-				String strings = "aAbBcC0dDeEfF1gGhHiI2jJkK3lLmM4nNoO5pPqQ6rRsStT7uUvV8wWxX9yYzZ"; 
+				String strings = "abcdef0123456789"; 
 				Random random = new Random(); 
 
 				for (int i = 0; i < 32; i++) { 

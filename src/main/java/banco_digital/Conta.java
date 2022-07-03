@@ -8,14 +8,24 @@ public class Conta implements Iconta {
 	protected String conta;
 	protected double saldo;
 	protected String nome;
+	protected Integer idConta;
 
 	Scanner sc = new Scanner(System.in);
 
 	public Conta() {
 
 	}
-
+	
 	public Conta(String nome, Integer agencia, String conta) {
+		this.nome = nome;
+		this.agencia = agencia;
+		this.conta = conta;
+	}
+	
+	
+
+	public Conta(Integer idConta, String nome, Integer agencia, String conta) {
+		this.idConta = idConta;
 		this.nome = nome;
 		this.agencia = agencia;
 		this.conta = conta;
@@ -25,8 +35,8 @@ public class Conta implements Iconta {
 
 		System.out.println();
 		System.out.println("O que deseja fazer a seguir? ");
-		System.out.println("1- Cadastrar contatos | 2- Cadastrar chave Pix | "
-				+ "3- Depositar | 4-Sacar | 5- Transferência | " + "6 - Ver extrato | 7- Listar contatos | 8- Sair");
+		System.out.println("1- Cadastrar contatos | 2- Area Pix | "
+				+ "3- Depositar | 4-Sacar | 5- Transferir | " + "6- Extratos | 7- Listar contatos | 8- Sair");
 	}
 	
 	public void limparTela() {
@@ -63,8 +73,14 @@ public class Conta implements Iconta {
 	}
 
 	public void transferir(double valor, Iconta contaDestino) {
-		this.sacar(valor);
-		contaDestino.depositar(valor);
+		
+		if (this.saldo >= valor) {
+			this.sacar(valor);
+			contaDestino.depositar(valor);
+	
+		} else {
+			System.out.println("Saldo insuficiente");
+		}
 	}
 	
 	public String getNome() {
