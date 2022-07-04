@@ -1,4 +1,10 @@
-package banco_digital;
+package banco_digital.contas;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 
 public class ContaPoupanca extends Conta {
 

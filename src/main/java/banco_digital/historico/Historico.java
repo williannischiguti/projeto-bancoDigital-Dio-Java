@@ -1,6 +1,7 @@
-package banco_digital;
+package banco_digital.historico;
 
 import java.util.List;
+import banco_digital.contas.Conta;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,22 +24,22 @@ public class Historico extends Conta {
 		this.valor = valor;
 	}
 
-	public String gerarComprovante(int opcao, int opcaoConta, double valor) {
+	public String gerarComprovante(String opcao, int opcaoConta, double valor) {
 
-		if (opcao == 3 && opcaoConta == 1) {
+		if (opcao == "Depósito" && opcaoConta == 1) {
 			this.historico = "Depósito em conta corrente: ";
 			return this.historico;
-		}else if (opcao == 3 && opcaoConta == 2) {
+		}else if (opcao == "Depósito" && opcaoConta == 2) {
 			this.historico = "Depósito em conta poupança: ";
 			return this.historico;
 		}
 
-		if (opcao == 4) {
+		if (opcao == "Saque") {
 			this.historico = "Saque realizado no valor de: ";
 			return this.historico;
 		}
 		
-		if (opcao == 5) {
+		if (opcao == "Transferência") {
 			this.historico = "\nTransferência realizada para: ";
 			return this.historico;
 		}else {

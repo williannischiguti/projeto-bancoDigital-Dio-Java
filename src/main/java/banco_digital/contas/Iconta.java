@@ -1,4 +1,4 @@
-package banco_digital;
+package banco_digital.contas;
 
 public interface Iconta {
 

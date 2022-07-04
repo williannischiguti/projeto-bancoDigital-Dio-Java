@@ -1,8 +1,13 @@
-package banco_digital;
+package banco_digital.contas;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 
 public class Pix extends ContaCorrente {
 
@@ -23,6 +28,8 @@ public class Pix extends ContaCorrente {
 
 		System.out.println("\n=== Cadastre sua chave Pix ===\n");
 		System.out.println("1 - Celular | 2 - CPF | 3 - E-mail | 4 - Chave Aleatória\n");
+		int opcaoPix = sc.nextInt();
+		cadastrarPix(opcaoPix);
 	}
 
 	public void cadastrarPix(int opcaoPix) {
