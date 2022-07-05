@@ -13,18 +13,22 @@ public class Historico extends Conta {
 	private List<Historico> transacao;
 	private Double valor;
 	private String tipoConta;
+	private String dataHoraOperacao;
 	
 	public Historico () {
 		
 	}
 	
-	public Historico(String historico, String tipoConta, Double valor) {
+	public Historico(String historico,  String tipoConta, Double valor,
+			String dataHoraOperacao) {
+		super();
 		this.historico = historico;
 		this.tipoConta = tipoConta;
 		this.valor = valor;
+		this.dataHoraOperacao = dataHoraOperacao;
 	}
 
-	public String gerarComprovante(String opcao, int opcaoConta, double valor) {
+	public String gerarComprovante(String opcao, int opcaoConta, double valor, String dataHoraOPeracao) {
 
 		if (opcao == "Depósito" && opcaoConta == 1) {
 			this.historico = "Depósito em conta corrente: ";
@@ -50,5 +54,4 @@ public class Historico extends Conta {
 	public List<Historico> gerarExtrato (List<Historico> transacao) {
 		return transacao;
 	}
-
 }
