@@ -3,7 +3,6 @@ package banco_digital.historico;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-
 import banco_digital.contas.Conta;
 import banco_digital.contatos.Contatos;
 import lombok.Getter;
