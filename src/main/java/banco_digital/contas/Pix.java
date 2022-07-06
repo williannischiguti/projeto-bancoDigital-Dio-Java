@@ -27,7 +27,7 @@ public class Pix extends ContaCorrente {
 	public void menuPix() {
 
 		System.out.println("\n=== Cadastre sua chave Pix ===\n");
-		System.out.println("1 - Celular | 2 - CPF | 3 - E-mail | 4 - Chave Aleatória\n");
+		System.out.println("1 - Celular | 2 - CPF | 3 - E-mail | 4 - Chave Aleatória | 5 - Sair\n");
 		int opcaoPix = sc.nextInt();
 		cadastrarPix(opcaoPix);
 	}
@@ -97,7 +97,10 @@ public class Pix extends ContaCorrente {
 			} else { 
 				System.out.println("Chave Pix já cadastrada: " + this.chaveAleatoriaPix);
 			}
-
+			
+		case 5:
+			
+			Conta.limparTela();
 			break;
 
 		default:
@@ -105,9 +108,4 @@ public class Pix extends ContaCorrente {
 
 		}
 	}
-
-	public void imprimirExtrato() {
-		super.imprimirInfosComuns();
-	}
-
 }
