@@ -22,12 +22,11 @@ public class Conta implements Iconta {
 	static Scanner sc = new Scanner(System.in);
 	Random random = new Random();
 
-	Conta minhaConta;
-	ContaCorrente contaCorrente;
-	ContaPoupanca contaPoupanca;
-	//Conta contas;
-	Pix pix;
-	OperacaoConta operacaoConta;
+	protected Conta minhaConta;
+	protected ContaCorrente contaCorrente;
+	protected ContaPoupanca contaPoupanca;
+	protected Pix pix;
+	protected OperacaoConta operacaoConta;
 
 	public Conta() {
 
@@ -44,10 +43,6 @@ public class Conta implements Iconta {
 		this.nome = nome;
 		this.agencia = agencia;
 		this.conta = conta;
-	}
-
-	public Integer getIdConta() {
-		return idConta;
 	}
 
 	public void criarConta() throws UnsupportedEncodingException {
@@ -173,17 +168,6 @@ public class Conta implements Iconta {
 		System.out.println("=== Saldo ===");
 		System.out.printf("Saldo conta corrente: %.2f%n", contaCorrente.getSaldo());
 		System.out.printf("Saldo conta poupança: %.2f%n", contaPoupanca.getSaldo());
-	}
-
-	protected void imprimirInfosComuns() {
-		System.out.println(String.format("Titular: %s", this.nome));
-		System.out.println(String.format("Agência: %s", this.agencia));
-		System.out.println(String.format("Número: %s", this.conta));
-		System.out.println(String.format("Saldo: %.2f", this.saldo));
-	}
-
-	public void imprimirExtrato() {
-
 	}
 
 	public static void limparTela() {

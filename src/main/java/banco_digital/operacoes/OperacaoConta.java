@@ -24,9 +24,8 @@ public class OperacaoConta {
 	DateTimeFormatter dateFormat;
 	Scanner sc = new Scanner(System.in);
 	Double valor;
+	Integer idContato = 0;
 	List<Historico> transacao = new ArrayList<Historico>();
-	List<Historico> transacaoEntradas = new ArrayList<Historico>();
-	List<Historico> transacaoSaidas = new ArrayList<Historico>();
 	String historicoEntrada = null;
 	String historicoSaida = null;
 	String tipoConta = null;
@@ -38,7 +37,7 @@ public class OperacaoConta {
 	public OperacaoConta() {
 		super();
 	}
-
+	
 	public void selecionarTipoConta(int operacao, ContaCorrente contaCorrente, ContaPoupanca contaPoupanca,
 			String tipoOperacao) throws UnsupportedEncodingException {
 
@@ -87,15 +86,18 @@ public class OperacaoConta {
 				
 				if (tipoTransacao == 4) {
 					break;
+					
 				}else {
-				verExtrato(tipoTransacao, contaCorrente, contaPoupanca);
+					
+				verExtrato(tipoTransacao);
+				
 				}
 			}
 
 		}
 	}
 
-	protected void depositar(int opcaoConta, ContaCorrente contaCorrente, ContaPoupanca contaPoupanca) {
+	protected void depositar(int opcaoConta, ContaCorrente contaCorrente, ContaPoupanca contaPoupanca) throws UnsupportedEncodingException {
 
 		if (opcaoConta == 1) {
 			Conta.limparTela();
@@ -114,10 +116,8 @@ public class OperacaoConta {
 			historicoEntrada = "Depósito";
 			tipoConta = "conta corrente";
 			entradas = new Historico(historicoEntrada, tipoConta, valor, dataHoraOperacao);
-			transacaoEntradas.add(entradas);
 			transacao.add(entradas);
-			System.out.printf("%s%.2f %s%n", historico.gerarComprovante(historicoEntrada, opcaoConta, valor, dataHoraOperacao),
-					entradas.getValor(), entradas.getDataHoraOperacao());
+			historico.gerarComprovante(historicoEntrada, opcaoConta, valor, dataHoraOperacao, idContato);
 			System.out.printf("%nSaldo atual conta corrente: %.2f%n", contaCorrente.getSaldo());
 		}
 
@@ -138,15 +138,13 @@ public class OperacaoConta {
 			historicoEntrada = "Depósito";
 			tipoConta = "conta poupança";
 			entradas = new Historico(historicoEntrada, tipoConta, valor, dataHoraOperacao);
-			transacaoEntradas.add(entradas);
 			transacao.add(entradas);
-			System.out.printf("%s%.2f %s%n", historico.gerarComprovante(historicoEntrada, opcaoConta, valor, dataHoraOperacao),
-					entradas.getValor(), entradas.getDataHoraOperacao());
+			historico.gerarComprovante(historicoEntrada, opcaoConta, valor, dataHoraOperacao, idContato);
 			System.out.printf("%nSaldo atual conta poupança: %.2f%n", contaPoupanca.getSaldo());
 		}
 	}
 
-	protected void sacar(int opcaoConta, ContaCorrente contaCorrente, ContaPoupanca contaPoupanca) {
+	protected void sacar(int opcaoConta, ContaCorrente contaCorrente, ContaPoupanca contaPoupanca) throws UnsupportedEncodingException {
 
 		if (contaCorrente.getSaldo() == 0 && contaPoupanca.getSaldo() == 0) {
 			Conta.limparTela();
@@ -174,10 +172,8 @@ public class OperacaoConta {
 			historicoSaida = "Saque";
 			tipoConta = "conta corrente";
 			saidas = new Historico(historicoSaida, tipoConta, valor, dataHoraOperacao);
-			transacaoSaidas.add(saidas);
 			transacao.add(saidas);
-			System.out.printf("%s%.2f %s%n", historico.gerarComprovante(historicoSaida, opcaoConta, valor, dataHoraOperacao),
-					saidas.getValor(), saidas.getDataHoraOperacao());
+			historico.gerarComprovante(historicoSaida, opcaoConta, valor, dataHoraOperacao, idContato);
 			System.out.printf("%nSaldo atual conta corrente: %.2f%n", contaCorrente.getSaldo());
 		}
 
@@ -199,10 +195,8 @@ public class OperacaoConta {
 			historicoSaida = "Saque";
 			tipoConta = "conta poupança";
 			saidas = new Historico(historicoSaida, tipoConta, valor, dataHoraOperacao);
-			transacaoSaidas.add(saidas);
 			transacao.add(saidas);
-			System.out.printf("%s%.2f %s%n", historico.gerarComprovante(historicoSaida, opcaoConta, valor, dataHoraOperacao),
-					saidas.getValor(), saidas.getDataHoraOperacao());
+			historico.gerarComprovante(historicoSaida, opcaoConta, valor, dataHoraOperacao, idContato);
 			System.out.printf("%nSaldo atual conta poupança: %.2f%n", contaPoupanca.getSaldo());
 		}
 	}
@@ -238,7 +232,7 @@ public class OperacaoConta {
 
 				System.out.printf("\nSaldo conta corrente: %.2f%n", contaCorrente.getSaldo());
 				System.out.print("Digite o ID do contato: ");
-				int idContato = sc.nextInt();
+				idContato = sc.nextInt();
 
 				if (idContato == Contatos.getCadastrarContatos().get(idContato - 1).getIdConta()) {
 					System.out.print("\nDigite o valor para transferência: ");
@@ -255,15 +249,9 @@ public class OperacaoConta {
 					dataHoraOperacao = dateFormat.format(LocalDateTime.now());
 					historicoSaida = "Transferência";
 					tipoConta = "conta corrente";
-					saidas = new Historico(historicoSaida, tipoConta, valor, dataHoraOperacao);
-					transacaoSaidas.add(saidas);
+					saidas = new Historico(historicoSaida, tipoConta, valor, dataHoraOperacao, idContato);
 					transacao.add(saidas);
-					historico.gerarComprovante(historicoSaida, Contatos.getIdConta(), valor, dataHoraOperacao);
-					ps.println("\n\nNome: " + Contatos.getCadastrarContatos().get(idContato - 1).getNome());
-					System.out.println("Agência: " + Contatos.getCadastrarContatos().get(idContato - 1).getAgencia());
-					System.out.println("Conta: " + Contatos.getCadastrarContatos().get(idContato - 1).getConta());
-					System.out.printf("Valor transferência: %.2f%n", valor);
-					System.out.printf("Realizada em: %s", saidas.getDataHoraOperacao());
+					historico.gerarComprovante(historicoSaida, Contatos.getIdConta(), valor, dataHoraOperacao, idContato);
 					System.out.printf("%nSaldo atual conta corrente: %.2f%n", contaCorrente.getSaldo());
 				}
 			}
@@ -272,7 +260,7 @@ public class OperacaoConta {
 
 				System.out.printf("\nSaldo conta poupança: %.2f%n", contaPoupanca.getSaldo());
 				System.out.print("Digite o ID do contato: ");
-				int idContato = sc.nextInt();
+				idContato = sc.nextInt();
 				if (idContato == Contatos.getCadastrarContatos().get(idContato - 1).getIdConta()) {
 					System.out.print("\nDigite o valor para transferência: ");
 					valor = sc.nextDouble();
@@ -289,85 +277,47 @@ public class OperacaoConta {
 					
 					historicoSaida = "Transferência";
 					tipoConta = "conta poupança";
-					saidas = new Historico(historicoSaida, tipoConta, valor, dataHoraOperacao);
-					transacaoSaidas.add(saidas);
+					saidas = new Historico(historicoSaida, tipoConta, valor, dataHoraOperacao, idContato);
 					transacao.add(saidas);
-					historico.gerarComprovante(historicoSaida, Contatos.getIdConta(), valor, dataHoraOperacao);
-					ps.println("\n\nNome: " + Contatos.getCadastrarContatos().get(idContato - 1).getNome());
-					System.out.println("Agência: " + Contatos.getCadastrarContatos().get(idContato - 1).getAgencia());
-					System.out.println("Conta: " + Contatos.getCadastrarContatos().get(idContato - 1).getConta());
-					System.out.printf("Valor transferência: %.2f%n", valor);
-					System.out.printf("Realizada em: %s", saidas.getDataHoraOperacao());
+					historico.gerarComprovante(historicoSaida, Contatos.getIdConta(), valor, dataHoraOperacao, idContato);
 					System.out.printf("%nSaldo atual conta poupança: %.2f%n", contaPoupanca.getSaldo());
 				}
 			}
 		}
 	}
 
-	protected void verExtrato(int tipoTransacao, ContaCorrente contaCorrente, ContaPoupanca contaPoupanca) {
+	protected void verExtrato(int tipoTransacao) {
+		
+		// 1 - Extrato geral
+		// 2 - Entradas
+		// 3 - Saídas
 
-		if (tipoTransacao == 1 && transacaoEntradas.isEmpty() && transacaoSaidas.isEmpty()) {
+		if (tipoTransacao == 1 && transacao.isEmpty()) {
 			Conta.limparTela();
 			System.out.println("Ainda não há registros de entradas e saídas.\n");
 		}
 		
-		if (tipoTransacao == 2 && transacaoEntradas.isEmpty()) {
+		if (tipoTransacao == 2 && historicoEntrada == null) {
 			Conta.limparTela();
 			System.out.println("Ainda não há registros de entradas.\n");
 		}
 		
-		if (tipoTransacao == 3 && transacaoSaidas.isEmpty()) {
+		if (tipoTransacao == 3 && historicoSaida == null) {
 			Conta.limparTela();
 			System.out.println("Ainda não há registros de saídas.\n");
 		}
 		
-		if (tipoTransacao == 1 && !transacaoEntradas.isEmpty() || tipoTransacao == 1 && !transacaoSaidas.isEmpty()) {
-			Conta.limparTela();
-			System.out.println("\n=== Extrato geral ===");
-
-			for (int i = 0; i < historico.gerarExtrato(transacao).size(); i++) {
-
-				if (i < transacaoEntradas.size()) {
-
-					System.out.printf("%s em %s: + R$ %.2f		%s%n", transacaoEntradas.get(i).getHistorico(),
-							transacaoEntradas.get(i).getTipoConta(), 
-							transacaoEntradas.get(i).getValor(), 
-							transacaoEntradas.get(i).getDataHoraOperacao());
-				}
-
-				if (i < transacaoSaidas.size()) {
-
-					System.out.printf("%s em %s: - R$ %.2f		%s%n", transacaoSaidas.get(i).getHistorico(),
-							transacaoSaidas.get(i).getTipoConta(), 
-							transacaoSaidas.get(i).getValor(),
-							transacaoSaidas.get(i).getDataHoraOperacao());
-				}
-
-			}
+		if (tipoTransacao == 1 && !transacao.isEmpty()) {
+			historico.gerarExtrato(tipoTransacao, transacao);
 
 		}
 
-		if (tipoTransacao == 2 && !transacaoEntradas.isEmpty()) {
-			Conta.limparTela();
-			System.out.println("\n=== Extrato entradas ===");
-			for (int i = 0; i < transacaoEntradas.size(); i++) {
+		if (tipoTransacao == 2 && !transacao.isEmpty() && historicoEntrada != null) {
+			historico.gerarExtrato(tipoTransacao, transacao);
 
-				System.out.printf("%s em %s: + R$ %.2f		%s%n", transacaoEntradas.get(i).getHistorico(),
-						transacaoEntradas.get(i).getTipoConta(), 
-						transacaoEntradas.get(i).getValor(), 
-						transacaoEntradas.get(i).getDataHoraOperacao());
-			}
 		}
-		if (tipoTransacao == 3 && !transacaoSaidas.isEmpty()) {
-			Conta.limparTela();
-			System.out.println("\n=== Extrato saídas ===");
-			for (int i = 0; i < transacaoSaidas.size(); i++) {
-
-				System.out.printf("%s em %s: - R$ %.2f		%s%n", transacaoSaidas.get(i).getHistorico(),
-						transacaoSaidas.get(i).getTipoConta(), 
-						transacaoSaidas.get(i).getValor(),
-						transacaoSaidas.get(i).getDataHoraOperacao());
-			}
+		if (tipoTransacao == 3 && !transacao.isEmpty() && historicoSaida != null) {
+			historico.gerarExtrato(tipoTransacao, transacao);
 		}
 	}
 
