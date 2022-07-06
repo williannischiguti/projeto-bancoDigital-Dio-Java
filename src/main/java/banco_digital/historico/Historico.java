@@ -71,6 +71,18 @@ public class Historico extends Conta {
 					dataHoraOPeracao.substring(11, 19), valor));
 		}
 		
+		if (opcao == "Pagamento"  && opcaoConta == 1) {
+			System.out.println(String.format("%s às %s  - Pagamento com conta corrente: R$ %.2f", 
+					dataHoraOPeracao.substring(0, 10), 
+					dataHoraOPeracao.substring(11, 19), valor));
+		}
+		
+		if (opcao == "Pagamento"  && opcaoConta == 2) {
+			System.out.println(String.format("%s às %s  - Pagamento com conta poupança: R$ %.2f", 
+					dataHoraOPeracao.substring(0, 10), 
+					dataHoraOPeracao.substring(11, 19), valor));
+		}
+		
 		if (opcao == "Transferência"  && opcaoConta == 1) {
 			PrintStream ps = new PrintStream(System.out, true, "ISO-8859-1");
 			System.out.print("\nTransferencia realizada para: ");
@@ -144,7 +156,7 @@ public class Historico extends Conta {
 			System.out.println("\n=== Extrato saídas ===");
 			for (int i = 0; i < transacao.size(); i++) {
 				if (transacao.get(i).getHistorico() != "Depósito")
-					System.out.printf("%s às %s - %s em %s: - R$ %.2f\n", transacao.get(i).getDataHoraOperacao().substring(0, 10),
+					System.out.printf("%s às %s - %s com %s: - R$ %.2f\n", transacao.get(i).getDataHoraOperacao().substring(0, 10),
 							transacao.get(i).getDataHoraOperacao().substring(11, 19),
 							transacao.get(i).getHistorico(),
 							transacao.get(i).getTipoConta(), 

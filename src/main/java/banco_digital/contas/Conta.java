@@ -85,7 +85,7 @@ public class Conta implements Iconta {
 			System.out.println();
 			System.out.println("O que deseja fazer a seguir? ");
 			System.out.println("1- Contatos | 2- Area Pix | " + "3- Depositar | 4-Sacar | 5- Transferir | "
-					+ "6- Extratos | 7- Pagamentos | 8- Sair");
+					+ "6- Pagamentos | 7- Extratos | 8- Sair");
 			int operacao = sc.nextInt();
 
 			if (operacao == 1) {
@@ -118,10 +118,16 @@ public class Conta implements Iconta {
 				String tipoOperacao = "transferência";
 				operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
 			}
-			
+						
 			else if (operacao == 6) {
 				Conta.limparTela();
-				String tipoOperacao = "saque";
+				String tipoOperacao = "pagar";
+				operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
+			}
+			
+			else if (operacao == 7) {
+				Conta.limparTela();
+				String tipoOperacao = "extrato";
 				operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
 			}
 			
@@ -141,12 +147,14 @@ public class Conta implements Iconta {
 	}
 
 	public void sacar(double valor) {
+		
 		if (this.saldo >= valor) {
 			saldo -= valor;
 		} 
 	}
 
 	public void depositar(double valor) {
+		
 		saldo += valor;
 	}
 
@@ -155,6 +163,13 @@ public class Conta implements Iconta {
 		if (this.saldo >= valor) {
 			this.sacar(valor);
 			contaDestino.depositar(valor);
+		} 
+	}
+	
+	public void pagarConta (double valor) {
+		
+		if (this.saldo >= valor) {
+			saldo -= valor;
 		} 
 	}
 	

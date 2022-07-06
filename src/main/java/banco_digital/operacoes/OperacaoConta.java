@@ -45,7 +45,7 @@ public class OperacaoConta {
 
 			int opcaoConta = 0;
 
-			if (operacao != 6) {
+			if (operacao != 7) {
 				System.out.println("\nDeseja fazer " + tipoOperacao + "?");
 				System.out.print("\n1- Conta Corrente | 2- Conta Poupança | 3- Voltar: ");
 				opcaoConta = sc.nextInt();
@@ -74,7 +74,11 @@ public class OperacaoConta {
 				transferir(opcaoConta, contaCorrente, contaPoupanca);
 			}
 
-			if (operacao == 6) {
+			if (operacao == 6 && opcaoConta == 1 || operacao == 6 && opcaoConta == 2) {
+				pagarConta(opcaoConta, contaCorrente, contaPoupanca);
+			}
+
+			if (operacao == 7) {
 				int tipoTransacao = 0;
 				System.out.println("\n=== Extratos ===\n");
 				System.out.println("1- Extrato geral");
@@ -210,10 +214,10 @@ public class OperacaoConta {
 				transacao.add(saidas);
 				historico.gerarComprovante(historicoSaida, opcaoConta, valor, dataHoraOperacao, idContato);
 				System.out.printf("%nSaldo atual conta poupança: %.2f%n", contaPoupanca.getSaldo());
-			}else {
+			} else {
 				System.out.println("Você não possui saldo para saque");
 			}
-		} 
+		}
 	}
 
 	protected void transferir(int opcaoConta, ContaCorrente contaCorrente, ContaPoupanca contaPoupanca)
@@ -300,6 +304,83 @@ public class OperacaoConta {
 					System.out.printf("%nSaldo atual conta poupança: %.2f%n", contaPoupanca.getSaldo());
 				}
 			}
+		}
+	}
+
+	protected void pagarConta(int opcaoConta, ContaCorrente contaCorrente, ContaPoupanca contaPoupanca)
+			throws UnsupportedEncodingException {
+
+		if (contaCorrente.getSaldo() == 0 && contaPoupanca.getSaldo() == 0) {
+			Conta.limparTela();
+			System.out.println("Você não possui saldo para fazer pagamento.");
+		}
+
+		if (opcaoConta == 1 && contaCorrente.getSaldo() > 0) {
+			Conta.limparTela();
+			System.out.println("=== Saldo ===");
+			System.out.printf("Saldo conta corrente: %.2f%n", contaCorrente.getSaldo());
+			System.out.printf("Saldo conta poupança: %.2f%n", contaPoupanca.getSaldo());
+			System.out.print("\nDigite o histórico de pagamento (opcional): ");
+			sc.nextLine();
+			historicoSaida = sc.nextLine();
+			System.out.print("\nDigite o valor para pagamento com a conta corrente: ");
+			valor = sc.nextDouble();
+
+			if (contaCorrente.getSaldo() >= valor) {
+				contaCorrente.pagarConta(valor);
+				dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+				dataHoraOperacao = dateFormat.format(LocalDateTime.now());
+
+				Conta.limparTela();
+				System.out.println("=== Saldo ===");
+				System.out.printf("Saldo conta corrente: %.2f%n", contaCorrente.getSaldo());
+				System.out.printf("Saldo conta poupança: %.2f%n", contaPoupanca.getSaldo());
+				if (historicoSaida == "") {
+					historicoSaida = "Pagamento";
+				}
+				tipoConta = "conta corrente";
+				saidas = new Historico(historicoSaida, tipoConta, valor, dataHoraOperacao);
+				transacao.add(saidas);
+				historico.gerarComprovante(historicoSaida, opcaoConta, valor, dataHoraOperacao, idContato);
+				System.out.printf("%nSaldo atual conta corrente: %.2f%n", contaCorrente.getSaldo());
+			} else {
+				System.out.println("Você não possui saldo para saque");
+			}
+
+		}
+
+		if (opcaoConta == 2 && contaPoupanca.getSaldo() > 0) {
+			Conta.limparTela();
+			System.out.println("=== Saldo ===");
+			System.out.printf("Saldo conta corrente: %.2f%n", contaCorrente.getSaldo());
+			System.out.printf("Saldo conta poupança: %.2f%n", contaPoupanca.getSaldo());
+			System.out.print("\nDigite o histórico de pagamento (opcional): ");
+			sc.nextLine();
+			historicoSaida = sc.nextLine();
+			System.out.print("\nDigite o valor para pagamento com a conta poupança: ");
+			valor = sc.nextDouble();
+
+			if (contaPoupanca.getSaldo() >= valor) {
+				contaPoupanca.pagarConta(valor);
+				dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+				dataHoraOperacao = dateFormat.format(LocalDateTime.now());
+
+				Conta.limparTela();
+				System.out.println("=== Saldo ===");
+				System.out.printf("Saldo conta corrente: %.2f%n", contaCorrente.getSaldo());
+				System.out.printf("Saldo conta poupança: %.2f%n", contaPoupanca.getSaldo());
+				if (historicoSaida == "") {
+					historicoSaida = "Pagamento";
+				}
+				tipoConta = "conta poupança";
+				saidas = new Historico(historicoSaida, tipoConta, valor, dataHoraOperacao);
+				transacao.add(saidas);
+				historico.gerarComprovante(historicoSaida, opcaoConta, valor, dataHoraOperacao, idContato);
+				System.out.printf("%nSaldo atual conta corrente: %.2f%n", contaCorrente.getSaldo());
+			} else {
+				System.out.println("Você não possui saldo para saque");
+			}
+
 		}
 	}
 
