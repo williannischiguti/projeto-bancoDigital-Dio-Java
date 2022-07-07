@@ -1,12 +1,14 @@
 package banco_digital.contas;
 
+import java.io.UnsupportedEncodingException;
+import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 import banco_digital.contatos.Contatos;
 import banco_digital.operacoes.OperacaoConta;
-import java.io.UnsupportedEncodingException;
-import java.util.Random;
 import lombok.Getter;
 import lombok.Setter;
+
 
 @Getter
 @Setter
@@ -51,6 +53,17 @@ public class Conta implements Iconta {
 		System.out.println("\nCadastre a sua conta");
 		System.out.print("Digite o seu nome: ");
 		this.nome = sc.nextLine();
+		
+		while (nome.isBlank() || !nome.matches("[A-Z][a-z][A-z]*")) {
+			System.out.println("Nome inválido");
+			System.out.println("\nTecle ENTER para continuar...");
+			sc.nextLine();
+			Conta.limparTela();
+			System.out.println("=== Olá, seja bem vindo ao Banco Digital ===");
+			System.out.println("\nCadastre a sua conta");
+			System.out.print("Digite o seu nome: ");
+			this.nome = sc.nextLine();
+		}
 
 		this.agencia = random.nextInt((9999 - 1000) + 1) + 1000;
 		int contaRandom = random.nextInt((99999 - 10000) + 1) + 10000;
@@ -77,84 +90,93 @@ public class Conta implements Iconta {
 		sc.nextLine();
 		limparTela();
 	}
-	
+
 	public void menu() throws UnsupportedEncodingException {
-		
+
 		while (true) {
-			
-			System.out.println();
-			System.out.println("O que deseja fazer a seguir? ");
-			System.out.println("1- Contatos | 2- Area Pix | " + "3- Depositar | 4-Sacar | 5- Transferir | "
-					+ "6- Pagamentos | 7- Extratos | 8- Sair");
-			int operacao = sc.nextInt();
 
-			if (operacao == 1) {
-				Conta.limparTela();
-				Contatos.menuContatos();
-			} 
-			
-			else if (operacao == 2) {
-				Conta.limparTela();
-				pix.menuPix();
-			} 
-			
-			else if (operacao == 3) {
-				Conta.limparTela();
-				mostrarSaldo();
-				String tipoOperacao = "depósito";
-				operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
-			}
-			
-			else if (operacao == 4) {
-				Conta.limparTela();
-				mostrarSaldo();
-				String tipoOperacao = "saque";
-				operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
-			}
-			
-			else if (operacao == 5) {
-				Conta.limparTela();
-				mostrarSaldo();
-				String tipoOperacao = "transferência";
-				operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
-			}
-						
-			else if (operacao == 6) {
-				Conta.limparTela();
-				String tipoOperacao = "pagar";
-				operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
-			}
-			
-			else if (operacao == 7) {
-				Conta.limparTela();
-				String tipoOperacao = "extrato";
-				operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
-			}
-			
-			else if (operacao == 8) {
-				break;
+			try {
 
-			} else {
-				System.out.println("Opção inválida");
+				System.out.println();
+				System.out.println("O que deseja fazer a seguir? ");
+				System.out.println("1- Contatos | 2- Area Pix | " + "3- Depositar | 4-Sacar | 5- Transferir | "
+						+ "6- Pagamentos | 7- Extratos | 8- Sair");
+				int operacao = sc.nextInt();
+
+				if (operacao == 1) {
+					Conta.limparTela();
+					Contatos.menuContatos();
+				}
+
+				else if (operacao == 2) {
+					Conta.limparTela();
+					pix.menuPix();
+				}
+
+				else if (operacao == 3) {
+					Conta.limparTela();
+					mostrarSaldo();
+					String tipoOperacao = "depósito";
+					operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
+				}
+
+				else if (operacao == 4) {
+					Conta.limparTela();
+					mostrarSaldo();
+					String tipoOperacao = "saque";
+					operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
+				}
+
+				else if (operacao == 5) {
+					Conta.limparTela();
+					mostrarSaldo();
+					String tipoOperacao = "transferência";
+					operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
+				}
+
+				else if (operacao == 6) {
+					Conta.limparTela();
+					String tipoOperacao = "pagar";
+					operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
+				}
+
+				else if (operacao == 7) {
+					Conta.limparTela();
+					String tipoOperacao = "extrato";
+					operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
+				}
+
+				else if (operacao == 8) {
+					break;
+
+				} else {
+					System.out.println("Opção inválida");
+					sc.nextLine();
+					System.out.println("\nTecle ENTER para continuar...");
+					sc.nextLine();
+					Conta.limparTela();
+					continue;
+				}
+			} catch (InputMismatchException erro) {
+				System.out.println("Opção inválida!");
 				sc.nextLine();
-				System.out.println("\nTecle ENTER para continuar...");
+				System.out.println("Tecle ENTER para continuar...");
 				sc.nextLine();
 				Conta.limparTela();
-				continue;
-			}
+			} 
 		}
 		System.out.println("Obrigado por usar o Banco Digital! Volte sempre!");
 	}
 
 	public void sacar(double valor) {
-		
+
 		if (this.saldo >= valor) {
 			saldo -= valor;
-		} 
+		}
 	}
 
 	public void depositar(double valor) {
-		
+
 		saldo += valor;
 	}
 
@@ -163,16 +185,16 @@ public class Conta implements Iconta {
 		if (this.saldo >= valor) {
 			this.sacar(valor);
 			contaDestino.depositar(valor);
-		} 
+		}
 	}
-	
-	public void pagarConta (double valor) {
-		
+
+	public void pagarConta(double valor) {
+
 		if (this.saldo >= valor) {
 			saldo -= valor;
-		} 
+		}
 	}
-	
+
 	protected void mostrarSaldo() {
 		System.out.println("=== Saldo ===");
 		System.out.printf("Saldo conta corrente: %.2f%n", contaCorrente.getSaldo());
@@ -194,8 +216,8 @@ public class Conta implements Iconta {
 
 				startProcess.waitFor();
 			}
-		} catch (Exception e) {
-			System.out.println(e);
+		} catch (Exception erro) {
+			System.out.println(erro);
 		}
 	}
 
