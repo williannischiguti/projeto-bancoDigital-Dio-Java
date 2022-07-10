@@ -5,6 +5,8 @@ Esse repositório possui a estrutura base do desafio de projeto da plataforma DI
 
 * O desafio proposto é dar mais robustez ao projeto base, utilizar lombok (no intuito de "enxugar" o código quando se trata de getters e setters), criar novas classes, "dar uma outra cara" ao projeto.
 
+* Link do repositório do desafio: https://github.com/falvojr/lab-banco-digital-oo
+
 <h1>Alterações realizadas na estrutura inicial do projeto</h1>
 
 * Utilizado lombok conforme sugerido no desafio.
