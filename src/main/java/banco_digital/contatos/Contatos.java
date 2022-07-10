@@ -8,6 +8,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import banco_digital.comparator.ComparatorContatosCrescente;
 import banco_digital.comparator.ComparatorContatosDecrescente;
@@ -19,14 +20,17 @@ import lombok.Setter;
 @Getter
 @Setter
 
+// Classe responsável por cadastrar e listar as contas da classe Conta
+// A classe utiliza Comparators para ordenação da lista por ordem Alfabética crescente, decrescente ou por ID da conta
+
 public class Contatos {
 
 	static Scanner sc = new Scanner(System.in, "ISO-8859-1");
 	static Random random = new Random();
 	static Conta conta = new Conta();
 
-	static List<Conta> cadastrarContatos = new ArrayList<Conta>();
-	static int idConta = 0;
+	protected static List<Conta> cadastrarContatos = new ArrayList<Conta>();
+	protected static int idConta = 0;
 
 	public Contatos() {
 
@@ -44,7 +48,7 @@ public class Contatos {
 		return idConta;
 	}
 
-	public static void menuContatos() throws UnsupportedEncodingException {
+	public static void menuContatos()  {
 
 		while (true) {
 
@@ -54,6 +58,7 @@ public class Contatos {
 				int opcao = sc.nextInt();
 
 				if (opcao == 1) {
+					sc.nextLine();
 					cadastrarContatos();
 
 				} else if (opcao == 2) {
@@ -121,8 +126,7 @@ public class Contatos {
 							sc.nextLine();
 							Conta.limparTela();
 							continue;
-						}
-						else {
+						} else {
 							System.out.println("Opção inválida");
 							sc.nextLine();
 							System.out.println("\nTecle ENTER para continuar...");
@@ -150,39 +154,57 @@ public class Contatos {
 				System.out.println("Tecle ENTER para continuar...");
 				sc.nextLine();
 				Conta.limparTela();
+			} catch (UnsupportedEncodingException erro ) {
+				System.out.println("Formato de encoding inválido.");
 			}
 		}
 	}
 
-	public static List<Conta> cadastrarContatos() throws UnsupportedEncodingException {
+	public static List<Conta> cadastrarContatos() {
 
-		System.out.print("Nome do contato: ");
-		sc.nextLine();
-		String nomeContato = sc.nextLine();
+		while (true) {
 
-		while (nomeContato.isBlank() || !nomeContato.matches("[A-Z][a-z][A-z]*")) {
-			System.out.println("Nome inválido");
-			System.out.println("\nTecle ENTER para continuar...");
+			System.out.println("\nDigite '0' caso queira retornar para tela anterior.");
+			System.out.print("\nNome do contato: ");
+			String nomeContato = sc.nextLine();
+			nomeContato = nomeContato.toUpperCase();
+
+			if (nomeContato != null && nomeContato != "") {
+				char charNome = nomeContato.charAt(0);
+				
+				if (charNome == '0') {
+					Conta.limparTela();
+					break;
+				}
+				
+			} else {
+				nomeContato = nomeContato.toUpperCase();
+			}
+
+			if (nomeContato.isBlank() || !Pattern.compile("[^a-z\0-9@]").matcher(nomeContato).find()
+					|| Pattern.compile("[0-9@]").matcher(nomeContato).find()) {
+				System.out.println("Nome inválido");
+				System.out.println("\nTecle ENTER para continuar...");
+				sc.nextLine();
+				Conta.limparTela();
+				continue;
+			}
+
+			int agencia = random.nextInt((9999 - 1000) + 1) + 1000;
+
+			int contaRandom = random.nextInt((99999 - 10000) + 1) + 10000;
+			String contaPadrao = Integer.toString(contaRandom).substring(0, 4) + "-"
+					+ Integer.toString(contaRandom).substring(4, 5);
+
+			idConta = idConta + 1;
+			conta = new Conta(idConta, nomeContato, agencia, contaPadrao);
+			cadastrarContatos.add(new Conta(idConta, nomeContato.toUpperCase(), agencia, contaPadrao));
+			System.out.println("\nContato cadastrado!");
+			System.out.println("Tecle ENTER para continuar...");
 			sc.nextLine();
 			Conta.limparTela();
-			System.out.println("\n1- Cadastrar novo contato | 2- Listar contatos | 3- Voltar");
-			System.out.print("\nNome do contato: ");
-			nomeContato = sc.nextLine();
+			break;
 		}
-
-		int agencia = random.nextInt((9999 - 1000) + 1) + 1000;
-
-		int contaRandom = random.nextInt((99999 - 10000) + 1) + 10000;
-		String contaPadrao = Integer.toString(contaRandom).substring(0, 4) + "-"
-				+ Integer.toString(contaRandom).substring(4, 5);
-
-		idConta = idConta + 1;
-		conta = new Conta(idConta, nomeContato, agencia, contaPadrao);
-		cadastrarContatos.add(new Conta(idConta, nomeContato.toUpperCase(), agencia, contaPadrao));
-		System.out.println("\nContato cadastrado!");
-		System.out.println("Tecle ENTER para continuar...");
-		sc.nextLine();
-		Conta.limparTela();
 
 		return cadastrarContatos;
 	}

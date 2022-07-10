@@ -1,17 +1,22 @@
 package banco_digital.contas;
 
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+
 import banco_digital.contatos.Contatos;
 import banco_digital.operacoes.OperacaoConta;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
+
+// Superclasse responsável pela criação da conta e direcionamento das operações (depósito, saque, transferência etc)
+// Utiliza a interface Iconta que tem por "contrato" a utilização dos métodos (depositar, sacar e transferir)
 
 public class Conta implements Iconta {
 
@@ -47,14 +52,16 @@ public class Conta implements Iconta {
 		this.conta = conta;
 	}
 
-	public void criarConta() throws UnsupportedEncodingException {
+	public void criarConta() {
 
 		System.out.println("=== Olá, seja bem vindo ao Banco Digital ===");
 		System.out.println("\nCadastre a sua conta");
 		System.out.print("Digite o seu nome: ");
 		this.nome = sc.nextLine();
-		
-		while (nome.isBlank() || !nome.matches("[A-Z][a-z][A-z]*")) {
+		this.nome = nome.toUpperCase();
+
+		while (nome.isBlank() || !Pattern.compile("[^a-z\0-9@]").matcher(nome).find()
+				|| Pattern.compile("[0-9@]").matcher(nome).find()) {
 			System.out.println("Nome inválido");
 			System.out.println("\nTecle ENTER para continuar...");
 			sc.nextLine();
@@ -63,6 +70,7 @@ public class Conta implements Iconta {
 			System.out.println("\nCadastre a sua conta");
 			System.out.print("Digite o seu nome: ");
 			this.nome = sc.nextLine();
+			this.nome = nome.toUpperCase();
 		}
 
 		this.agencia = random.nextInt((9999 - 1000) + 1) + 1000;
@@ -80,18 +88,25 @@ public class Conta implements Iconta {
 		imprimirDadosConta();
 	}
 
-	public void imprimirDadosConta() throws UnsupportedEncodingException {
-		System.out.println("=== Dados da sua conta criada ===\n");
-		System.out.println("Nome: " + this.nome);
-		System.out.println("Agência: " + this.agencia);
-		System.out.println("Conta: " + this.conta);
+	public void imprimirDadosConta() {
 
-		System.out.println("Tecle ENTER para continuar...");
-		sc.nextLine();
-		limparTela();
+		try {
+			System.out.println("=== Dados da sua conta criada ===\n");
+			PrintStream ps = new PrintStream(System.out, true, "ISO-8859-1");
+			ps.println("Nome: " + this.nome);
+			System.out.println("Agência: " + this.agencia);
+			System.out.println("Conta: " + this.conta);
+
+			System.out.println("Tecle ENTER para continuar...");
+			sc.nextLine();
+			limparTela();
+
+		} catch (UnsupportedEncodingException erro) {
+			System.out.println("Formato de encoding inválido.");
+		}
 	}
 
-	public void menu() throws UnsupportedEncodingException {
+	public void menu() {
 
 		while (true) {
 
@@ -99,7 +114,7 @@ public class Conta implements Iconta {
 
 				System.out.println();
 				System.out.println("O que deseja fazer a seguir? ");
-				System.out.println("1- Contatos | 2- Area Pix | " + "3- Depositar | 4-Sacar | 5- Transferir | "
+				System.out.println("1- Contatos | 2- Cadastrar Pix | 3- Depositar | 4-Sacar | 5- Transferir | "
 						+ "6- Pagamentos | 7- Extratos | 8- Sair");
 				int operacao = sc.nextInt();
 
@@ -136,7 +151,7 @@ public class Conta implements Iconta {
 
 				else if (operacao == 6) {
 					Conta.limparTela();
-					String tipoOperacao = "pagar";
+					String tipoOperacao = "pagamento";
 					operacaoConta.selecionarTipoConta(operacao, contaCorrente, contaPoupanca, tipoOperacao);
 				}
 
@@ -163,7 +178,7 @@ public class Conta implements Iconta {
 				System.out.println("Tecle ENTER para continuar...");
 				sc.nextLine();
 				Conta.limparTela();
-			} 
+			}
 		}
 		System.out.println("Obrigado por usar o Banco Digital! Volte sempre!");
 	}

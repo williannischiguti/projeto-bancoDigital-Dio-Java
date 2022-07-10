@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
-import banco_digital.exceptions.ExceptionTreatment;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,53 +29,74 @@ public class Pix extends ContaCorrente {
 
 	public void menuPix() {
 
-		try {
+		int opcaoPix;
 
-			System.out.println("\n=== Cadastre sua chave Pix ===\n");
-			System.out.println("1 - Celular | 2 - CPF | 3 - E-mail | 4 - Chave Aleatória | 5 - Sair\n");
-			int opcaoPix = sc.nextInt();
+		while (true) {
 
-			while (opcaoPix < 1 || opcaoPix > 5) {
-				System.out.println("Opção inválida");
-				sc.nextLine();
-				System.out.println("\nTecle ENTER para continuar...");
-				sc.nextLine();
-				Conta.limparTela();
+			try {
+
 				System.out.println("\n=== Cadastre sua chave Pix ===\n");
 				System.out.println("1 - Celular | 2 - CPF | 3 - E-mail | 4 - Chave Aleatória | 5 - Sair\n");
 				opcaoPix = sc.nextInt();
+
+				if (opcaoPix < 1 || opcaoPix > 5) {
+					System.out.println("Opção inválida");
+					sc.nextLine();
+					System.out.println("\nTecle ENTER para continuar...");
+					sc.nextLine();
+					Conta.limparTela();
+					continue;
+				}
+
+				if (opcaoPix == 5) {
+					Conta.limparTela();
+					break;
+				}
+
+				if (opcaoPix != 5) {
+					cadastrarPix(opcaoPix);
+				}
+
+			} catch (InputMismatchException error) {
+				System.out.println("Opção inválida!");
+				sc.nextLine();
+				System.out.println("Tecle ENTER para continuar...");
+				sc.nextLine();
+				Conta.limparTela();
 			}
-
-			cadastrarPix(opcaoPix);
-
-		} catch (InputMismatchException error) {
-			System.out.println("Opção inválida!");
-			sc.nextLine();
-			System.out.println("Tecle ENTER para continuar...");
-			sc.nextLine();
-			Conta.limparTela();
 		}
 	}
 
 	public void cadastrarPix(int opcaoPix) {
 
-		switch (opcaoPix) {
+		while (true) {
 
-		case 1:
-			if (this.celularPix == null) {
-				try {
+			try {
 
-					System.out.print("Digite seu celular com DDD (apenas números): ");
-					this.celularPix = sc.next();
+				if (opcaoPix == 1 && this.celularPix == null) {
 
-					while (this.celularPix.length() != 11) {
+					System.out.println("Digite '0' caso queira retornar para tela anterior");
+					System.out.print("\nDigite seu celular com DDD (apenas números): ");
+					celularPix = sc.next();
+
+					if (celularPix != null && celularPix != "") {
+						char charCel = celularPix.charAt(0);
+
+						if (charCel == '0') {
+							Conta.limparTela();
+							celularPix = null;
+							break;
+						}
+					}
+
+					if (celularPix.length() != 11 || !Pattern.compile("[0-9]").matcher(celularPix).find()) {
 						sc.nextLine();
-						System.out.println("O número deve ter 11 dígitos numéricos.");
+						celularPix = null;
+						System.out.println("Formato inválido");
 						System.out.println("Tecle ENTER para continuar...");
 						sc.nextLine();
 						Conta.limparTela();
-						System.out.print("Digite seu celular com DDD (apenas números): ");
-						this.celularPix = sc.next();
+						continue;
 					}
 
 					this.celularPix = "(" + this.celularPix.toString().substring(0, 2) + ")"
@@ -83,111 +104,145 @@ public class Pix extends ContaCorrente {
 							+ this.celularPix.toString().substring(7, 11);
 
 					System.out.print("Chave Pix cadastrada (celular): " + this.celularPix + "\n");
-				} catch (StringIndexOutOfBoundsException error) {
-					System.out.println("Formato inválido!");
-				} catch (ExceptionTreatment error) {
-					System.out.println("Número inválido");
+					sc.nextLine();
+					System.out.println("Tecle ENTER para continuar");
+					sc.nextLine();
+					Conta.limparTela();
+					break;
+
+				} else if (opcaoPix == 1 && this.celularPix != null) {
+					System.out.println("Chave Pix já cadastrada: " + this.celularPix);
+					sc.nextLine();
+					System.out.println("Tecle ENTER para continuar");
+					sc.nextLine();
+					Conta.limparTela();
+					break;
 				}
-			} else {
-				System.out.println("Chave Pix já cadastrada: " + this.celularPix);
-			}
-			break;
 
-		case 2:
-
-			if (this.cpfPix == null) {
-				try {
-					System.out.print("Digite seu CPF (apenas números): ");
+				if (opcaoPix == 2 && this.cpfPix == null) {
+					System.out.println("Digite '0' caso queira retornar para tela anterior");
+					System.out.print("\nDigite seu CPF (apenas números): ");
 					this.cpfPix = sc.next();
+					
+					if (cpfPix != null && cpfPix != "") {
+						char charCel = cpfPix.charAt(0);
 
-					while (this.cpfPix.length() != 11) {
+						if (charCel == '0') {
+							Conta.limparTela();
+							cpfPix = null;
+							break;
+						}
+					}
+
+					if (cpfPix.length() != 11 || !Pattern.compile("[0-9]").matcher(cpfPix).find()) {
 						sc.nextLine();
-						System.out.println("O CPF precisa ter 11 dígitos numéricos.");
+						cpfPix = null;
+						System.out.println("Formato inválido");
 						System.out.println("Tecle ENTER para continuar...");
 						sc.nextLine();
 						Conta.limparTela();
-						System.out.print("Digite seu CPF (apenas números): ");
-						this.cpfPix = sc.next();
+						break;
 					}
 
-					this.cpfPix = this.cpfPix.substring(0, 3) + "." + this.cpfPix.substring(3, 6) + "."
-							+ this.cpfPix.substring(6, 9) + "-" + this.cpfPix.substring(9, 11);
-					System.out.print("Chave Pix cadastrada (CPF): " + this.cpfPix + "\n");
-				} catch (StringIndexOutOfBoundsException error) {
-					System.out.println("Formato inválido");
-				} catch (ExceptionTreatment error) {
-					System.out.println("Formato inválido");
+					cpfPix = cpfPix.substring(0, 3) + "." + cpfPix.substring(3, 6) + "." + cpfPix.substring(6, 9) + "-"
+							+ cpfPix.substring(9, 11);
+					System.out.print("Chave Pix cadastrada (CPF): " + cpfPix + "\n");
+					sc.nextLine();
+					System.out.println("Tecle ENTER para continuar");
+					sc.nextLine();
+					Conta.limparTela();
+					break;
+
+				} else if (opcaoPix == 2 && this.cpfPix != null) {
+					System.out.println("Chave Pix já cadastrada: " + cpfPix);
+					sc.nextLine();
+					System.out.println("Tecle ENTER para continuar");
+					sc.nextLine();
+					Conta.limparTela();
+					break;
 				}
-			} else {
-				System.out.println("Chave Pix já cadastrada: " + this.cpfPix);
-			}
-			break;
 
-		case 3:
+				if (opcaoPix == 3 && this.emailPix == null) {
+					System.out.println("Digite '0' caso queira retornar para tela anterior");
+					System.out.print("\nDigite seu e-mail: ");
+					this.emailPix = sc.next();
+					
+					if (emailPix != null && emailPix != "") {
+						char charCel = emailPix.charAt(0);
 
-			if (this.emailPix == null) {
-				System.out.print("Digite seu e-mail: ");
-				this.emailPix = sc.next();
+						if (charCel == '0') {
+							Conta.limparTela();
+							emailPix = null;
+							break;
+						}
+					}
 
-				while (true) {
-					if (!this.emailPix.contains("@") || !this.emailPix.contains(".com")) {
-
+					if (!emailPix.contains("@") || !emailPix.contains(".com")) {
 						sc.nextLine();
-						System.out.println("Formato inválido!");
+						emailPix = null;
+						System.out.println("\nFormato inválido!");
 						System.out.println("Tecle ENTER para continuar");
 						sc.nextLine();
 						Conta.limparTela();
-						System.out.print("Digite seu e-mail: ");
-						this.emailPix = sc.next();
-					} else {
 						break;
 					}
+
+					System.out.print("Chave Pix cadastrada (E-mail): " + emailPix + "\n");
+					sc.nextLine();
+					System.out.println("Tecle ENTER para continuar");
+					sc.nextLine();
+					Conta.limparTela();
+					break;
+
+				} else if (opcaoPix == 3 && this.emailPix != null) {
+					System.out.println("Chave Pix já cadastrada: " + emailPix);
+					sc.nextLine();
+					System.out.println("Tecle ENTER para continuar");
+					sc.nextLine();
+					Conta.limparTela();
+					break;
 				}
-				System.out.print("Chave Pix cadastrada (E-mail): " + this.emailPix + "\n");
-			} else {
-				System.out.println("Chave Pix já cadastrada: " + this.emailPix);
-			}
-			break;
 
-		case 4:
+				if (opcaoPix == 4 && this.chaveAleatoriaPix == null) {
 
-			if (this.chaveAleatoriaPix == null) {
+					List<String> listOfStrings = new ArrayList<String>();
+					String strings = "abcdef0123456789";
+					Random random = new Random();
 
-				List<String> listOfStrings = new ArrayList<String>();
-				String strings = "abcdef0123456789";
-				Random random = new Random();
+					for (int i = 0; i < 32; i++) {
+						int randomStrings = random.nextInt(strings.length());
+						char charAt = strings.charAt(randomStrings);
+						String charAtString = Character.toString(charAt);
+						listOfStrings.add(charAtString);
+					}
+					chaveAleatoriaPix = listOfStrings.toString().replaceAll("\\[|\\]", "").replaceAll(", ", "");
+					chaveAleatoriaPix = chaveAleatoriaPix.substring(0, 8) + "-" + chaveAleatoriaPix.substring(8, 12)
+							+ "-" + chaveAleatoriaPix.substring(12, 16) + "-" + chaveAleatoriaPix.substring(16, 20)
+							+ "-" + chaveAleatoriaPix.substring(20, 32);
+					System.out.print("Chave Pix cadastrada (chave aleatória): " + chaveAleatoriaPix + "\n");
+					sc.nextLine();
+					System.out.println("Tecle ENTER para continuar");
+					sc.nextLine();
+					Conta.limparTela();
+					break;
 
-				for (int i = 0; i < 32; i++) {
-					int randomStrings = random.nextInt(strings.length());
-					char charAt = strings.charAt(randomStrings);
-					String charAtString = Character.toString(charAt);
-					listOfStrings.add(charAtString);
+				} else if (opcaoPix == 4 && this.chaveAleatoriaPix != null) {
+					System.out.println("Chave Pix já cadastrada: " + chaveAleatoriaPix);
+					sc.nextLine();
+					System.out.println("Tecle ENTER para continuar");
+					sc.nextLine();
+					Conta.limparTela();
+					break;
 				}
-				this.chaveAleatoriaPix = listOfStrings.toString().replaceAll("\\[|\\]", "").replaceAll(", ", "");
-				this.chaveAleatoriaPix = this.chaveAleatoriaPix.substring(0, 8) + "-"
-						+ this.chaveAleatoriaPix.substring(8, 12) + "-" + this.chaveAleatoriaPix.substring(12, 16) + "-"
-						+ this.chaveAleatoriaPix.substring(16, 20) + "-" + this.chaveAleatoriaPix.substring(20, 32);
-				System.out.print("Chave Pix cadastrada (chave aleatória): " + this.chaveAleatoriaPix + "\n");
+			} catch (StringIndexOutOfBoundsException erro) {
+				System.out.println("Tamanho inválido");
+				System.out.println("Precisa ter 11 dígitos numéricos");
 				sc.nextLine();
-				System.out.println("Tecle ENTER para continuar");
+				System.out.println("Tecle ENTER para continuar...");
 				sc.nextLine();
 				Conta.limparTela();
-			} else {
-				System.out.println("Chave Pix já cadastrada: " + this.chaveAleatoriaPix);
-				sc.nextLine();
-				System.out.println("Tecle ENTER para continuar");
-				sc.nextLine();
-				Conta.limparTela();
+				break;
 			}
-
-		case 5:
-
-			Conta.limparTela();
-			break;
-
-		default:
-			System.out.println("Opção inválida");
-
 		}
 	}
 }

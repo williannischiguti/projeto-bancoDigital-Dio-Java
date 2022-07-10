@@ -8,6 +8,8 @@ import banco_digital.contatos.Contatos;
 import lombok.Getter;
 import lombok.Setter;
 
+// Classe responsável por registrar o histórico das transações e gerar os comprovantes e extratos
+
 @Getter
 @Setter
 public class Historico extends Conta {
@@ -18,23 +20,20 @@ public class Historico extends Conta {
 	private String tipoConta;
 	private String dataHoraOperacao;
 	private Integer idContato;
-	
-	
-	public Historico () {
-		
+
+	public Historico() {
+
 	}
-	
-	public Historico(String historico,  String tipoConta, Double valor,
-			String dataHoraOperacao) {
+
+	public Historico(String historico, String tipoConta, Double valor, String dataHoraOperacao) {
 		super();
 		this.historico = historico;
 		this.tipoConta = tipoConta;
 		this.valor = valor;
 		this.dataHoraOperacao = dataHoraOperacao;
 	}
-	
-	public Historico(String historico,  String tipoConta, Double valor,
-			String dataHoraOperacao, Integer idContato) {
+
+	public Historico(String historico, String tipoConta, Double valor, String dataHoraOperacao, Integer idContato) {
 		super();
 		this.historico = historico;
 		this.tipoConta = tipoConta;
@@ -43,123 +42,115 @@ public class Historico extends Conta {
 		this.idContato = idContato;
 	}
 
-	public void gerarComprovante(String opcao, int opcaoConta, double valor, String dataHoraOPeracao, int idContato) throws UnsupportedEncodingException {
-		
+	public void gerarComprovante(String opcao, int opcaoConta, double valor, String dataHoraOPeracao, int idContato) {
+
 		if (opcao == "Depósito" && opcaoConta == 1) {
-			System.out.println(String.format("%s às %s  - Depósito em conta corrente: R$ %.2f", 
-					dataHoraOPeracao.substring(0, 10), 
-					dataHoraOPeracao.substring(11, 19), valor)); 
-			
-		}else if (opcao == "Depósito" && opcaoConta == 2) {
-			System.out.println(String.format("%s às %s  - Depósito em conta poupança: R$ %.2f", 
-					dataHoraOPeracao.substring(0, 10), 
-					dataHoraOPeracao.substring(11, 19), valor));
-			
+			System.out.println(String.format("\n%s às %s  - Depósito em conta corrente: R$ %.2f",
+					dataHoraOPeracao.substring(0, 10), dataHoraOPeracao.substring(11, 19), valor));
+
+		} else if (opcao == "Depósito" && opcaoConta == 2) {
+			System.out.println(String.format("\n%s às %s  - Depósito em conta poupança: R$ %.2f",
+					dataHoraOPeracao.substring(0, 10), dataHoraOPeracao.substring(11, 19), valor));
+
 		}
 
-		if (opcao == "Saque"  && opcaoConta == 1) {
-			System.out.println(String.format("%s às %s  - Saque em conta corrente: R$ %.2f", 
-					dataHoraOPeracao.substring(0, 10), 
-					dataHoraOPeracao.substring(11, 19), valor));
-			
+		if (opcao == "Saque" && opcaoConta == 1) {
+			System.out.println(String.format("\n%s às %s  - Saque em conta corrente: R$ %.2f",
+					dataHoraOPeracao.substring(0, 10), dataHoraOPeracao.substring(11, 19), valor));
+
 		}
-		
-		if (opcao == "Saque"  && opcaoConta == 2) {
-			System.out.println(String.format("%s às %s  - Saque em conta poupança: R$ %.2f", 
-					dataHoraOPeracao.substring(0, 10), 
-					dataHoraOPeracao.substring(11, 19), valor));
+
+		if (opcao == "Saque" && opcaoConta == 2) {
+			System.out.println(String.format("\n%s às %s  - Saque em conta poupança: R$ %.2f",
+					dataHoraOPeracao.substring(0, 10), dataHoraOPeracao.substring(11, 19), valor));
 		}
-		
-		if (opcao == "Pagamento"  && opcaoConta == 1) {
-			System.out.println(String.format("%s às %s  - Pagamento com conta corrente: R$ %.2f", 
-					dataHoraOPeracao.substring(0, 10), 
-					dataHoraOPeracao.substring(11, 19), valor));
+
+		if (opcao == "Pagamento" && opcaoConta == 1) {
+			System.out.println(String.format("\n%s às %s  - Pagamento com conta corrente: R$ %.2f",
+					dataHoraOPeracao.substring(0, 10), dataHoraOPeracao.substring(11, 19), valor));
 		}
-		
-		if (opcao == "Pagamento"  && opcaoConta == 2) {
-			System.out.println(String.format("%s às %s  - Pagamento com conta poupança: R$ %.2f", 
-					dataHoraOPeracao.substring(0, 10), 
-					dataHoraOPeracao.substring(11, 19), valor));
+
+		if (opcao == "Pagamento" && opcaoConta == 2) {
+			System.out.println(String.format("\n%s às %s  - Pagamento com conta poupança: R$ %.2f",
+					dataHoraOPeracao.substring(0, 10), dataHoraOPeracao.substring(11, 19), valor));
 		}
-		
-		if (opcao == "Transferência"  && opcaoConta == 1) {
-			PrintStream ps = new PrintStream(System.out, true, "ISO-8859-1");
-			System.out.print("\nTransferencia realizada para: ");
-			ps.println("\n\nNome: " + Contatos.getCadastrarContatos().get(idContato - 1).getNome());
-			System.out.println("Agência: " + Contatos.getCadastrarContatos().get(idContato - 1).getAgencia());
-			System.out.println("Conta: " + Contatos.getCadastrarContatos().get(idContato - 1).getConta());
-			System.out.printf("Valor transferência: %.2f%n", valor);
-			System.out.println(String.format("Transferência realizada em %s às %s", 
-					dataHoraOPeracao.substring(0, 10), 
-					dataHoraOPeracao.substring(11, 19)));
-		}
-		
-		if (opcao == "Transferência"  && opcaoConta == 2) {
-			PrintStream ps = new PrintStream(System.out, true, "ISO-8859-1");
-			System.out.print("\nTransferencia realizada para: ");
-			ps.println("\n\nNome: " + Contatos.getCadastrarContatos().get(idContato - 1).getNome());
-			System.out.println("Agência: " + Contatos.getCadastrarContatos().get(idContato - 1).getAgencia());
-			System.out.println("Conta: " + Contatos.getCadastrarContatos().get(idContato - 1).getConta());
-			System.out.printf("Valor transferência: %.2f%n", valor);
-			System.out.println(String.format("Transferência realizada em %s às %s", 
-					dataHoraOPeracao.substring(0, 10), 
-					dataHoraOPeracao.substring(11, 19)));
+
+		try {
+
+			if (opcao == "Transferência" && opcaoConta == 1) {
+				PrintStream ps = new PrintStream(System.out, true, "ISO-8859-1");
+				System.out.print("\nTransferencia realizada para: ");
+				ps.println("\n\nNome: " + Contatos.getCadastrarContatos().get(idContato - 1).getNome());
+				System.out.println("Agência: " + Contatos.getCadastrarContatos().get(idContato - 1).getAgencia());
+				System.out.println("Conta: " + Contatos.getCadastrarContatos().get(idContato - 1).getConta());
+				System.out.printf("Valor transferência: %.2f%n", valor);
+				System.out.println(String.format("Transferência realizada em %s às %s",
+						dataHoraOPeracao.substring(0, 10), dataHoraOPeracao.substring(11, 19)));
+			}
+
+			if (opcao == "Transferência" && opcaoConta == 2) {
+				PrintStream ps = new PrintStream(System.out, true, "ISO-8859-1");
+				System.out.print("\nTransferencia realizada para: ");
+				ps.println("\n\nNome: " + Contatos.getCadastrarContatos().get(idContato - 1).getNome());
+				System.out.println("Agência: " + Contatos.getCadastrarContatos().get(idContato - 1).getAgencia());
+				System.out.println("Conta: " + Contatos.getCadastrarContatos().get(idContato - 1).getConta());
+				System.out.printf("Valor transferência: %.2f%n", valor);
+				System.out.println(String.format("Transferência realizada em %s às %s",
+						dataHoraOPeracao.substring(0, 10), dataHoraOPeracao.substring(11, 19)));
+			}
+		} catch (UnsupportedEncodingException erro) {
+			System.out.println("Formato de encoding inválido.");
 		}
 	}
-	
-	public void gerarExtrato (int tipoTransacao, List<Historico> transacao) {
-		
+
+	public void gerarExtrato(int tipoTransacao, List<Historico> transacao) {
+
 		if (tipoTransacao == 1 && !transacao.isEmpty()) {
 			Conta.limparTela();
-			
+
 			System.out.println("\n=== Extrato geral ===");
 
 			for (int i = 0; i < transacao.size(); i++) {
 
 				if (transacao.get(i).getHistorico() == "Depósito") {
 
-					System.out.printf("%s às %s - %s em %s: + R$ %.2f\n", transacao.get(i).getDataHoraOperacao().substring(0, 10),
-							transacao.get(i).getDataHoraOperacao().substring(11, 19),
-							transacao.get(i).getHistorico(),
-							transacao.get(i).getTipoConta(), 
-							transacao.get(i).getValor());
-				}
-				else {
-					System.out.printf("%s às %s - %s em %s: - R$ %.2f\n", transacao.get(i).getDataHoraOperacao().substring(0, 10),
-							transacao.get(i).getDataHoraOperacao().substring(11, 19),
-							transacao.get(i).getHistorico(),
-							transacao.get(i).getTipoConta(), 
-							transacao.get(i).getValor());
-					
+					System.out.printf("%s às %s - %s em %s: + R$ %.2f\n",
+							transacao.get(i).getDataHoraOperacao().substring(0, 10),
+							transacao.get(i).getDataHoraOperacao().substring(11, 19), transacao.get(i).getHistorico(),
+							transacao.get(i).getTipoConta(), transacao.get(i).getValor());
+				} else {
+					System.out.printf("%s às %s - %s %s: - R$ %.2f\n",
+							transacao.get(i).getDataHoraOperacao().substring(0, 10),
+							transacao.get(i).getDataHoraOperacao().substring(11, 19), transacao.get(i).getHistorico(),
+							transacao.get(i).getTipoConta(), transacao.get(i).getValor());
+
 				}
 			}
 		}
-		
+
 		if (tipoTransacao == 2 && !transacao.isEmpty()) {
 			Conta.limparTela();
-			
+
 			System.out.println("\n=== Extrato entradas ===");
 			for (int i = 0; i < transacao.size(); i++) {
 				if (transacao.get(i).getHistorico() == "Depósito")
-					
-					System.out.printf("%s às %s - %s em %s: + R$ %.2f\n", transacao.get(i).getDataHoraOperacao().substring(0, 10),
-							transacao.get(i).getDataHoraOperacao().substring(11, 19),
-							transacao.get(i).getHistorico(),
-							transacao.get(i).getTipoConta(), 
-							transacao.get(i).getValor());
+
+					System.out.printf("%s às %s - %s em %s: + R$ %.2f\n",
+							transacao.get(i).getDataHoraOperacao().substring(0, 10),
+							transacao.get(i).getDataHoraOperacao().substring(11, 19), transacao.get(i).getHistorico(),
+							transacao.get(i).getTipoConta(), transacao.get(i).getValor());
 			}
 		}
-		
+
 		if (tipoTransacao == 3 && !transacao.isEmpty()) {
 			Conta.limparTela();
 			System.out.println("\n=== Extrato saídas ===");
 			for (int i = 0; i < transacao.size(); i++) {
 				if (transacao.get(i).getHistorico() != "Depósito")
-					System.out.printf("%s às %s - %s com %s: - R$ %.2f\n", transacao.get(i).getDataHoraOperacao().substring(0, 10),
-							transacao.get(i).getDataHoraOperacao().substring(11, 19),
-							transacao.get(i).getHistorico(),
-							transacao.get(i).getTipoConta(), 
-							transacao.get(i).getValor());
+					System.out.printf("%s às %s - %s com %s: - R$ %.2f\n",
+							transacao.get(i).getDataHoraOperacao().substring(0, 10),
+							transacao.get(i).getDataHoraOperacao().substring(11, 19), transacao.get(i).getHistorico(),
+							transacao.get(i).getTipoConta(), transacao.get(i).getValor());
 			}
 		}
 	}
